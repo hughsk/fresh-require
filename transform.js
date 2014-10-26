@@ -16,6 +16,8 @@ var argref = acorn.parse(
 ).body[0].expression
 
 function fresh(filename) {
+  if (path.extname(filename) === '.json') return through()
+
   var buffer = []
 
   return through(write, flush)
