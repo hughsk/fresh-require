@@ -1,6 +1,6 @@
 {
   "name": "fresh-require",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Bypass the require cache when requiring a module – works with both node and browserify",
   "main": "index.js",
   "browser": "browser.js",
