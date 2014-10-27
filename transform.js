@@ -11,8 +11,12 @@ var path      = require('path')
 module.exports = fresh
 
 var root   = require.resolve('./')
-var argref = acorn.parse(
+var topref = acorn.parse(
   'arguments.length === 1 ? arguments.callee.caller.caller : arguments.callee.caller'
+).body[0].expression
+
+var argref = acorn.parse(
+  '(arguments.length === 1 ? arguments.callee.caller.caller : arguments.callee.caller).arguments[0]'
 ).body[0].expression
 
 function fresh(filename) {
@@ -58,16 +62,24 @@ function fresh(filename) {
 
     var fresh   = isreq(match)
     var topname = free()
+    var argname = free()
 
     ast.body.unshift({
         type: 'VariableDeclaration'
       , kind: 'var'
       , declarations: [{
           type: 'VariableDeclarator'
-        , init: argref
+        , init: topref
         , id: {
             type: 'Identifier'
           , name: topname
+        }
+      }, {
+          type: 'VariableDeclarator'
+        , init: argref
+        , id: {
+            type: 'Identifier'
+          , name: argname
         }
       }]
     })
@@ -79,6 +91,11 @@ function fresh(filename) {
       node.arguments[1] = {
           type: 'Identifier'
         , name: topname
+      }
+
+      node.arguments[2] = {
+          type: 'Identifier'
+        , name: argname
       }
 
       var original = copy(node)
