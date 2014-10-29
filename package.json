@@ -6,9 +6,10 @@
   "browser": "browser.js",
   "license": "MIT",
   "scripts": {
-    "test": "npm run test-node && npm run test-browser",
+    "test": "npm run test-node && npm run test-browser && npm run test-globals",
     "test-node": "node test/index.js | tap-spec",
-    "test-browser": "browserify test/index.js -t ./transform | smokestack --tape | tap-spec"
+    "test-browser": "browserify test/index.js -t ./transform | smokestack --tape | tap-spec",
+    "test-globals": "browserify test/index.js -t ./transform --insert-globals | smokestack --tape | tap-spec"
   },
   "author": {
     "name": "Hugh Kennedy",

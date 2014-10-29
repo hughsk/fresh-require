@@ -10,14 +10,16 @@ var path      = require('path')
 
 module.exports = fresh
 
-var root   = require.resolve('./')
-var topref = acorn.parse(
-  'arguments.length === 1 ? arguments.callee.caller.caller : arguments.callee.caller'
-).body[0].expression
+var parent = (
+    '( arguments.length === 3'
+  + '? arguments.callee.caller'
+  + ': arguments.callee.caller.caller'
+  + ')'
+)
 
-var argref = acorn.parse(
-  '(arguments.length === 1 ? arguments.callee.caller.caller : arguments.callee.caller).arguments[0]'
-).body[0].expression
+var root   = require.resolve('./')
+var topref = acorn.parse(parent).body[0].expression
+var argref = acorn.parse(parent + '.arguments[0]').body[0].expression
 
 function fresh(filename) {
   if (path.extname(filename) === '.json') return through()
