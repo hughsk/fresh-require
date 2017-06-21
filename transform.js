@@ -11,7 +11,7 @@ var path      = require('path')
 module.exports = fresh
 
 var parent = (
-    '( arguments.length === 3'
+    '( arguments.length === 7'
   + '? arguments.callee.caller'
   + ': arguments.callee.caller.caller'
   + ')'
